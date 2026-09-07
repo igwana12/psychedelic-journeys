@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
   const { password } = await request.json();
 
   // Set your password here
-  const SITE_PASSWORD = 'B4lls'; // Change this to your desired password
+  const SITE_PASSWORD = '000'; // Change this to your desired password
 
   if (password === SITE_PASSWORD) {
     const response = NextResponse.json({ success: true });
