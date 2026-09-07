@@ -10,9 +10,11 @@ import Link from "next/link";
  *
  * Hot ink: red. Cool ink: teal (one of each per page, §8).
  *
- * ALL long-form copy is the client's and is reproduced verbatim (§5) — only
- * headings, kickers and labels are restyled. The old page centred its
- * paragraphs and used rounded panels; both are gone (§6.4).
+ * The long-form copy is the client's. §5 says keep it verbatim, and it was,
+ * until Niko asked (2026-09-07) for every em dash replaced with a comma. That
+ * is the one sanctioned edit: dashes only, no rewording beyond re-pointing a
+ * clause so the comma reads as a comma and not a splice. The old page centred
+ * its paragraphs and used rounded panels; both are gone (§6.4).
  */
 
 const PRACTICES = [
@@ -35,14 +37,14 @@ const PRACTICES = [
 ];
 
 const WISDOM = [
-  "Start with SEA (Southeast Asia) or Latin America—low cost, good infrastructure, established expat communities",
-  "You need less money than you think—$1,000-1,500/month covers living expenses in most places",
-  "Remote work beats passive income for most people—it's more reliable and faster to establish",
-  "Learn basic tax obligations—you're still subject to your home country's laws even abroad",
-  "Slow travel beats fast travel—stay 1-3 months per place to actually live, not just visit",
-  "Join digital nomad communities online before you go—Reddit, Facebook groups, Nomad List",
-  "Health insurance matters—look into SafetyWing or similar nomad-specific coverage",
-  "The hardest part is the decision, not the execution—once you commit, the path appears",
+  "Start with SEA (Southeast Asia) or Latin America, where costs are low, infrastructure is good and expat communities are established",
+  "You need less money than you think, $1,000-1,500 a month covers living expenses in most places",
+  "Remote work beats passive income for most people, it's more reliable and faster to establish",
+  "Learn basic tax obligations, you're still subject to your home country's laws even abroad",
+  "Slow travel beats fast travel, stay 1-3 months per place to actually live, not just visit",
+  "Join digital nomad communities online before you go, try Reddit, Facebook groups and Nomad List",
+  "Health insurance matters, look into SafetyWing or similar nomad-specific coverage",
+  "The hardest part is the decision, not the execution. Once you commit, the path appears",
 ];
 
 /** An ink header band above every reading panel. */
@@ -186,8 +188,8 @@ export default function EscapePage() {
             className="lead"
             style={{ color: "var(--paper)", marginTop: 20, maxWidth: "46ch" }}
           >
-            The realization that the script you were handed—9-5, mortgage,
-            retirement—doesn&apos;t have to be your story.
+            The realization that the script you were handed, 9-5, mortgage,
+            retirement, doesn&apos;t have to be your story.
           </p>
         </div>
       </header>
@@ -206,7 +208,7 @@ export default function EscapePage() {
           <Panel>
             <Para>
               You sit in your cubicle, or your corner office, or your remote work setup, and
-              something clicks. This isn&apos;t living—it&apos;s performing a role someone
+              something clicks. This isn&apos;t living, it&apos;s performing a role someone
               else wrote. The career ladder, the status symbols, the deferred happiness... it
               all starts to look like an elaborate illusion.
             </Para>
@@ -241,7 +243,7 @@ export default function EscapePage() {
               You&apos;re running toward a life that actually fits your values.
             </PullQuote>
             <Para>
-              Southeast Asia, Latin America, Eastern Europe—these regions offer rich cultures,
+              Southeast Asia, Latin America, Eastern Europe, these regions offer rich cultures,
               low costs, and growing communities of people who&apos;ve made the same leap.
               You&apos;re not running away from something; you&apos;re running toward a life
               that actually fits your values.
@@ -376,7 +378,10 @@ export default function EscapePage() {
             className="torn"
             style={{
               background: "var(--red-deep)",
-              padding: "clamp(26px, 4vw, 44px) clamp(20px, 4vw, 40px) clamp(60px, 8vw, 96px)",
+              /* The torn clip bites up to 24% of the block height, so the bottom
+                 padding must clear that notch or it eats the closing line
+                 (Niko 2026-09-07). 34% of the block, floored at 150px. */
+              padding: "clamp(26px, 4vw, 44px) clamp(20px, 4vw, 40px) clamp(150px, 16vw, 190px)",
             }}
           >
             <h2 className="head-m" style={{ color: "var(--yellow)", marginBottom: 14 }}>
@@ -393,7 +398,7 @@ export default function EscapePage() {
             >
               The system doesn&apos;t break when you leave it. It just continues without you.
               And you? You get to build something that&apos;s actually yours. The question
-              isn&apos;t whether it&apos;s possible—thousands prove it is every day. The
+              isn&apos;t whether it&apos;s possible, thousands prove it is every day. The
               question is whether you&apos;re willing to trade comfort for freedom.
             </p>
             <p
