@@ -73,13 +73,18 @@ export default function Home() {
               Psychedelic Journeys
             </p>
 
+            {/* One line, never broken (Niko 2026-09-07). The clamp is capped by
+                viewport width so the word always fits its column. */}
             <h1
               className="display-xl"
-              style={{ color: "var(--red)", margin: "18px 0 0" }}
+              style={{
+                color: "var(--red)",
+                margin: "18px 0 0",
+                fontSize: "clamp(38px, 8.2vw, 96px)",
+                whiteSpace: "nowrap",
+              }}
             >
-              ODDY
-              <br />
-              SSEYS
+              ODDYSSEYS
             </h1>
 
             <p className="lead" style={{ marginTop: 22 }}>
