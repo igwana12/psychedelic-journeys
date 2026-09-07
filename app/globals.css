@@ -1,8 +1,300 @@
 @import "tailwindcss";
 
+/* ============================================================
+   ODDYSSEYS POSTER SYSTEM — tokens + motifs
+   Per "Oddysseys — Redesign Handoff" §1 (tokens), §2 (type scale),
+   §3 (motifs). Manu Chao / Latin-American street-poster collage:
+   newsprint ground, hard ink keylines, flat poster ink, no blur.
+
+   This layer is additive. The dark amber system below it is scoped to
+   .journey-page (the [slug] detail route) and is untouched until that
+   route is converted.
+   ============================================================ */
+
+:root {
+  /* ---- ground ---- */
+  --paper:       #F4EAD5;
+  --paper-dim:   #E3D5B8;
+  --card:        #FFFFFF;
+  --ink:         #14100D;
+  --ink-soft:    #2A2420;
+  --muted:       #6B5F52;
+  --muted-dark:  #9C8E7C;  /* mono meta on --ink (#14100D) ONLY */
+  --muted-light: #C0B3A2;  /* mono meta on ink-soft / placeholder grounds */
+
+  /* ---- hot inks: ONE per page ---- */
+  --yellow:      #FFD400;
+  --red:         #E02B1D;  /* display grounds + decoration ONLY (§7) */
+  --red-deep:    #B01B10;  /* links, mono accents, any red ground with small text */
+  --coral:       #F86B5C;  /* mono accents on ink */
+
+  /* ---- cool inks: ONE per page ---- */
+  --teal:        #1E9E8E;
+  --blue:        #2B4FA8;
+  --green:       #4E9A3E;
+
+  /* ---- type ---- see the body block below ---- */
+
+  /* ---- structure ---- */
+  --rule:        3px;
+  --rule-heavy:  4px;
+  --offset:      6px;
+  --radius:      0;
+  --tap:         48px;
+
+  /* ---- motion: steps only, never an easing curve (§9) ---- */
+  --step:        110ms;
+  --ease:        steps(2, end);
+}
+
+/* Tailwind v4 theme bridge — this repo is Tailwind 4, so tokens are
+   registered here in @theme rather than in a tailwind.config.js (§1's
+   config block is written for v3). Utilities: bg-paper, text-ink,
+   font-display, shadow-print, border-3, ease-print. */
+@theme inline {
+  --color-paper:       #F4EAD5;
+  --color-paper-dim:   #E3D5B8;
+  --color-card:        #FFFFFF;
+  --color-ink:         #14100D;
+  --color-ink-soft:    #2A2420;
+  --color-muted:       #6B5F52;
+  --color-muted-dark:  #9C8E7C;
+  --color-muted-light: #C0B3A2;
+  --color-bemba:       #FFD400;
+  --color-poster:      #E02B1D;
+  --color-poster-deep: #B01B10;
+  --color-coral:       #F86B5C;
+  --color-havana:      #1E9E8E;
+  --color-crayon:      #2B4FA8;
+  --color-field:       #4E9A3E;
+
+  /* Font stacks are declared in :root above, NOT here. `@theme inline` emits
+     values verbatim, so a var() reference inside it resolves in the wrong
+     scope and lands empty — which is exactly what silently killed Alfa Slab
+     on the first build. The poster type classes below carry these faces
+     directly, so no Tailwind font utilities are needed for them. */
+
+  --shadow-print:     6px 6px 0 #14100D;
+  --shadow-print-sm:  3px 3px 0 #14100D;
+  --shadow-print-red: 8px 8px 0 #E02B1D;
+
+  --radius-none: 0;
+  --ease-print: steps(2, end);
+}
+
+/* next/font emits its CSS variables on the <body> class, not on :root, so the
+   poster font stacks are declared here rather than in :root — a :root
+   declaration referencing var(--font-alfa) resolves to nothing and silently
+   falls back to Inter. */
+body {
+  --font-display: var(--font-alfa), 'Alfa Slab One', Georgia, serif;
+  --font-head:    var(--font-archivo-black), 'Archivo Black', system-ui, sans-serif;
+  --font-body:    var(--font-archivo), 'Archivo', system-ui, sans-serif;
+  --font-stamp:   var(--font-plex-mono), 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+/* ============================================================
+   TYPE SCALE (§2)
+   Display gets a hard ink offset — never blurred, never a glow.
+   Body ≥ 15px, legal ≥ 14px. Tracked uppercase mono is the one
+   exception and bottoms out at 10.5px.
+   ============================================================ */
+
+.display-xl {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 8vw, 96px);
+  line-height: 0.86;
+  text-shadow: 4px 4px 0 var(--ink);
+}
+.display-l {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 5vw, 54px);
+  line-height: 0.90;
+  text-shadow: 4px 4px 0 var(--ink);
+}
+.head-m {
+  font-family: var(--font-head);
+  font-size: 30px;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+.head-s {
+  font-family: var(--font-head);
+  font-size: 15px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.lead {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 1.45;
+  max-width: 42ch;
+}
+.body-copy {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.62;
+  max-width: 68ch;
+}
+.stamp-label {
+  font-family: var(--font-stamp);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   MOTIFS (§3) — all CSS. No image assets, no SVG files.
+   Every decorative motif is aria-hidden + pointer-events:none (§7).
+   ============================================================ */
+
+/* checker tape — section separators, 8–16px tall */
+.tape       { height: 12px; background: repeating-conic-gradient(var(--red) 0% 25%, var(--paper) 0% 50%) 0 0/16px 16px; }
+.tape--warm { background: repeating-conic-gradient(var(--red) 0% 25%, var(--yellow) 0% 50%) 0 0/14px 14px; }
+.tape--ink  { background: repeating-conic-gradient(var(--ink) 0% 25%, var(--paper) 0% 50%) 0 0/14px 14px; }
+
+/* halftone grain — over flat colour blocks, NEVER over photos (§3, §9) */
+.halftone {
+  background-image: radial-gradient(var(--ink) 1.6px, transparent 1.7px);
+  background-size: 7px 7px;
+}
+
+/* sun rays — one per page maximum, decorative, never behind body copy */
+.sun {
+  border-radius: 50%;
+  pointer-events: none;
+  background: repeating-conic-gradient(from 0deg, var(--red) 0deg 5deg, transparent 5deg 17deg);
+  animation: sun-spin 75s linear infinite;
+}
+@keyframes sun-spin { to { transform: rotate(360deg); } }
+
+/* torn bottom edge — on colour blocks, not on photos */
+.torn {
+  clip-path: polygon(0 0, 100% 0, 100% 78%, 92% 90%, 84% 76%, 76% 92%, 68% 78%,
+                     59% 94%, 50% 79%, 42% 93%, 33% 77%, 25% 91%, 16% 78%, 8% 92%, 0 79%);
+}
+
+/* barcode rule — footer, ticket stubs */
+.barcode {
+  height: 40px;
+  background: repeating-linear-gradient(90deg,
+    var(--ink) 0 2px, transparent 2px 5px, var(--ink) 5px 9px,
+    transparent 9px 11px, var(--ink) 11px 13px, transparent 13px 18px);
+}
+
+/* rubber stamp — badges, counts, dates. Always duplicates text found
+   elsewhere: a rotated stamp is never the sole carrier of information (§7). */
+.stamp {
+  border: 3px double var(--red-deep);
+  color: var(--red-deep);
+  font-family: var(--font-stamp);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 7px 11px;
+  transform: rotate(-7deg);
+}
+
+/* marker scrawl — drawn ON TOP of photos. One ring per photo, circling a
+   subject; never over a face, never over the caption, never on a photo
+   under 200px wide. Vary rotation −9deg…+6deg per card. */
+.scrawl-ring {
+  border: 5px solid var(--yellow);
+  border-radius: 62% 38% 55% 45% / 48% 56% 44% 52%;
+  transform: rotate(-7deg);
+  pointer-events: none;
+}
+.scrawl-under {
+  border-bottom: 5px solid var(--red);
+  border-radius: 0 0 60% 40% / 0 0 100% 100%;
+  transform: rotate(-3deg);
+  pointer-events: none;
+}
+
+/* hard print offset — the ONLY shadow in the system. Zero blur, always. */
+.offset { box-shadow: var(--offset) var(--offset) 0 var(--ink); }
+
+/* ============================================================
+   BUTTON (§4)
+   Nothing scales, nothing fades. The press collapses the element
+   into its own shadow. Hit target ≥ 48px (§7).
+   ============================================================ */
+
+.btn-poster {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap);
+  padding: 13px 22px;
+  border-radius: 0;
+  font-family: var(--font-head);
+  font-size: 15px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform var(--step) var(--ease), box-shadow var(--step) var(--ease);
+}
+.btn-poster--primary {
+  background: var(--yellow);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+.btn-poster--secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 3px solid var(--ink);
+}
+.btn-poster--secondary:hover {
+  background: var(--red-deep);
+  color: var(--paper);
+}
+.btn-poster--ghost {
+  background: transparent;
+  border: 0;
+  border-bottom: 3px solid var(--red);
+  color: var(--red-deep);
+  font-family: var(--font-stamp);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  padding: 13px 4px;
+}
+.btn-poster--ghost:hover {
+  background: var(--yellow);
+  color: var(--ink);
+}
+.btn-poster--primary:hover { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--ink); }
+.btn-poster--primary:active { transform: translate(5px, 5px); box-shadow: 0 0 0 var(--ink); }
+
+/* ============================================================
+   GLOBAL BEHAVIOUR (§7)
+   ============================================================ */
+
+/* Focus is visible everywhere and stays red on cream — on-brand, not a clash. */
+.poster :focus-visible,
+.poster:focus-visible {
+  outline: 3px solid var(--red);
+  outline-offset: 3px;
+}
+
+/* Nothing loops and nothing animates under reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .sun { animation: none; }
+  .ticker__track { animation: none; }
+  .poster * { transition-duration: 0ms !important; }
+  .filmstrip { scroll-behavior: auto; }
+}
+
+
+/* Legacy aliases for the dark .journey-page system. NOTE: --font-display is
+   deliberately NOT redefined here — the poster @theme above binds it to Alfa
+   Slab One. The detail route reads Poppins through its own --display var. */
 @theme inline {
   --font-sans: var(--font-inter);
-  --font-display: var(--font-poppins);
   --font-mono: var(--font-space-mono);
 }
 
