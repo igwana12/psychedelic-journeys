@@ -12,8 +12,7 @@ import type { JourneyData } from "@/types/journey";
  * The kind tag stays bg red-deep with paper text in both (5.9:1) — never
  * poster red, which fails at label size (§7).
  *
- * Photos are unfiltered and framed. One scrawl ring per card, its rotation
- * varied by index across −9deg…+6deg so they never look stamped (§3).
+ * Photos are unfiltered and framed. No scrawl ring — Niko cut it 2026-09-07.
  */
 export default function JourneyCard({
   journey,
@@ -25,8 +24,6 @@ export default function JourneyCard({
   variant?: "strip" | "grid";
 }) {
   const onInk = variant === "strip";
-  // −9deg … +6deg, deterministic per card so server and client agree.
-  const scrawlRotation = -9 + ((index * 5) % 16);
 
   return (
     <Link
@@ -61,17 +58,9 @@ export default function JourneyCard({
           loading={index < 3 ? "eager" : "lazy"}
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
         />
-        <div
-          className="scrawl-ring"
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: "26% 14% auto auto",
-            width: "34%",
-            height: "34%",
-            transform: `rotate(${scrawlRotation}deg)`,
-          }}
-        />
+        {/* No scrawl ring (Niko 2026-09-07: "not sure I like the circle drawn on
+            the thumbs"). The photograph carries itself; the collage energy lives
+            in the frame furniture — corner tab, index badge, torn kind tag. */}
         {/* index badge — 40px yellow square, hung off the top-left corner */}
         <span
           aria-hidden="true"

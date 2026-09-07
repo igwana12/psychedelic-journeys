@@ -27,6 +27,14 @@ export default function Home() {
           borderBottom: "4px solid var(--ink)",
         }}
       >
+        {/* Halftone over the flat yellow — §3 allows it on colour blocks, never
+            on photos. Kept faint so the lead stays at full contrast. */}
+        <div
+          className="halftone"
+          aria-hidden="true"
+          style={{ position: "absolute", inset: 0, opacity: 0.14, zIndex: 0 }}
+        />
+
         {/* one sun per page, behind content, never under body copy */}
         <div
           className="sun"
@@ -73,10 +81,14 @@ export default function Home() {
               Psychedelic Journeys
             </p>
 
-            {/* One line, never broken (Niko 2026-09-07). The clamp is capped by
-                viewport width so the word always fits its column. */}
+            {/* One line, never broken (Niko 2026-09-07), with an interpunct
+                between ODD and YSSEYS sitting at half the cap height. The dot is
+                a span rather than a "·" glyph so its size and vertical centre are
+                exact rather than at the mercy of the face's own metrics; the
+                accessible name stays "ODDYSSEYS" via aria-label. */}
             <h1
               className="display-xl"
+              aria-label="Oddysseys"
               style={{
                 color: "var(--red)",
                 margin: "18px 0 0",
@@ -84,7 +96,22 @@ export default function Home() {
                 whiteSpace: "nowrap",
               }}
             >
-              ODDYSSEYS
+              <span aria-hidden="true">
+                ODD
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "0.17em",
+                    height: "0.17em",
+                    margin: "0 0.07em",
+                    background: "currentColor",
+                    /* cap height in Alfa Slab One is ~0.72em; half of that is the
+                       optical middle of the letters, measured from the baseline. */
+                    verticalAlign: "0.28em",
+                  }}
+                />
+                YSSEYS
+              </span>
             </h1>
 
             <p className="lead" style={{ marginTop: 22 }}>
@@ -102,11 +129,23 @@ export default function Home() {
             </div>
           </div>
 
-          {/* hero photo — 4:5 frame, 4px ink keyline, hard offset, stamp overlapping */}
+          {/* hero photo — 4:5 frame, 4px ink keyline, hard offset, stamp overlapping.
+              A torn yellow block sits behind it, pasted-up poster style. */}
           <div style={{ position: "relative" }}>
+            <div
+              className="torn"
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                inset: "26px 26px -26px -26px",
+                background: "var(--red)",
+                zIndex: 0,
+              }}
+            />
             <div
               style={{
                 position: "relative",
+                zIndex: 1,
                 aspectRatio: "4 / 5",
                 border: "4px solid var(--ink)",
                 boxShadow: "10px 10px 0 var(--ink)",
@@ -128,8 +167,9 @@ export default function Home() {
               aria-hidden="true"
               style={{
                 position: "absolute",
-                top: -14,
-                right: -10,
+                zIndex: 2,
+                top: -16,
+                right: -12,
                 background: "var(--paper)",
               }}
             >
@@ -142,6 +182,7 @@ export default function Home() {
       <div className="tape tape--ink" aria-hidden="true" />
 
       <Ticker items={journeys.map((j) => j.name.trim())} />
+      <div className="tape tape--warm" aria-hidden="true" />
 
       {/* ── SECTION HEADER (on paper) ──────────────────────────────────── */}
       <div
@@ -165,16 +206,22 @@ export default function Home() {
           <h2 className="display-l" style={{ color: "var(--ink)", textShadow: "none" }}>
             The Journeys
           </h2>
-          <p className="stamp-label" style={{ color: "var(--red-deep)" }}>
-            {count} stops · five continents · drag it
-          </p>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <p className="stamp-label" style={{ color: "var(--red-deep)" }}>
+              {count} stops · five continents · drag it
+            </p>
+            <span className="stamp" aria-hidden="true" style={{ transform: "rotate(5deg)" }}>
+              Est. 2026
+            </span>
+          </div>
         </div>
       </div>
 
       {/* ── FILMSTRIP (the only inverted block) ────────────────────────── */}
       <section
-        style={{ background: "var(--ink)", padding: "clamp(28px, 5vw, 48px) 0" }}
+        style={{ background: "var(--ink)", padding: "clamp(28px, 5vw, 48px) 0", position: "relative" }}
       >
+        <div className="tape tape--ink" aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, right: 0 }} />
         <div
           className="filmstrip"
           tabIndex={0}
