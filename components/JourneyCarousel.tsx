@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 interface Journey {
@@ -14,10 +14,23 @@ interface Journey {
 
 interface JourneyCarouselProps {
   journeys: Journey[];
+  initialSlug?: string | null;
 }
 
-export default function JourneyCarousel({ journeys }: JourneyCarouselProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+export default function JourneyCarousel({ journeys, initialSlug }: JourneyCarouselProps) {
+  const initialIndex = initialSlug
+    ? journeys.findIndex(j => j.slug === initialSlug)
+    : 0;
+  const [currentIndex, setCurrentIndex] = useState(initialIndex >= 0 ? initialIndex : 0);
+
+  useEffect(() => {
+    if (initialSlug) {
+      const index = journeys.findIndex(j => j.slug === initialSlug);
+      if (index >= 0) {
+        setCurrentIndex(index);
+      }
+    }
+  }, [initialSlug, journeys]);
 
   const goToSlide = (index: number) => {
     setCurrentIndex(index);

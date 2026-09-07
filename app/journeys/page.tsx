@@ -1,3 +1,8 @@
+"use client";
+
+import { Suspense } from "react";
+
+import { useSearchParams } from "next/navigation";
 import JourneyCarousel from "@/components/JourneyCarousel";
 
 const journeys = [
@@ -107,7 +112,10 @@ const journeys = [
   },
 ];
 
-export default function JourneysPage() {
+function JourneysContent() {
+  const searchParams = useSearchParams();
+  const journeySlug = searchParams.get("journey");
+
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
       {/* Journey Carousel */}
@@ -122,8 +130,16 @@ export default function JourneysPage() {
           </p>
         </div>
 
-        <JourneyCarousel journeys={journeys} style={{ marginTop: "20px" }} />
+        <JourneyCarousel journeys={journeys} initialSlug={journeySlug} style={{ marginTop: "20px" }} />
       </section>
     </div>
+  );
+}
+
+export default function JourneysPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-zinc-950" />}>
+      <JourneysContent />
+    </Suspense>
   );
 }
