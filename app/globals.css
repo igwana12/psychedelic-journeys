@@ -271,6 +271,31 @@ body {
 .btn-poster--primary:active { transform: translate(5px, 5px); box-shadow: 0 0 0 var(--ink); }
 
 /* ============================================================
+   LAYOUT PIECES (§4, §6)
+   ============================================================ */
+
+/* Ticker marquee. Duplicated content + width:max-content, so -50% is a
+   seamless loop. Paused on hover; killed under reduced motion. */
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.ticker:hover .ticker__track { animation-play-state: paused; }
+
+/* Filmstrip: the one thing on the page allowed to scroll sideways (§8). */
+.filmstrip { scrollbar-width: thin; scrollbar-color: var(--paper-dim) var(--ink); }
+.filmstrip::-webkit-scrollbar { height: 10px; }
+.filmstrip::-webkit-scrollbar-track { background: var(--ink); }
+.filmstrip::-webkit-scrollbar-thumb { background: var(--paper-dim); border-radius: 0; }
+
+/* Card press — collapses into its own shadow, like the buttons. Never scales. */
+.jcard { transition: transform var(--step) var(--ease), box-shadow var(--step) var(--ease); }
+.jcard--strip:hover { transform: translate(4px, 4px); box-shadow: 4px 4px 0 var(--red) !important; }
+.jcard--grid:hover  { transform: translate(3px, 3px); box-shadow: 4px 4px 0 var(--ink) !important; }
+
+/* Hero: single column on phones, two from 900px. */
+@media (min-width: 900px) {
+  .hero-grid { grid-template-columns: 1.05fr 0.95fr !important; }
+}
+
+/* ============================================================
    GLOBAL BEHAVIOUR (§7)
    ============================================================ */
 
